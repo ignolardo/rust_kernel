@@ -13,9 +13,11 @@ pub extern "C" fn _start() -> ! {
     
     println!("Hello World! This is my {}\n", "operating system");
     
+    my_os::init();
+
     #[cfg(test)]
     test_main();
-    
+
     loop {}
 }
 
