@@ -8,6 +8,10 @@ name = "my_os"
 test = false
 bench = false
 
+[[test]]
+name = "stack_overflow"
+harness = false
+
 
 [dependencies]
 bootloader = "0.9"

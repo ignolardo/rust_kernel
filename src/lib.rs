@@ -10,10 +10,12 @@ use core::panic::PanicInfo;
 pub mod vga_buffers;
 pub mod serial;
 pub mod interrupts;
+pub mod gdt;
 
 
 
 pub fn init() {
+    gdt::init();
     interrupts::init_idt();
 }
 
@@ -41,7 +43,7 @@ pub fn test_runner(tests: &[&dyn Testable]) {
     for test in tests {
         test.run();
     }
-    exit_qemu(QemuExitCode::Succes);
+    exit_qemu(QemuExitCode::Success);
 }
 
 pub fn test_panic_handler(info: &PanicInfo) -> ! {
@@ -68,7 +70,7 @@ fn panic(info: &PanicInfo) -> ! {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 pub enum QemuExitCode {
-    Succes = 0x10,
+    Success = 0x10,
     Failed = 0x11,
 }
 
