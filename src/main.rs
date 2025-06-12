@@ -18,13 +18,13 @@ pub extern "C" fn _start() -> ! {
     #[cfg(test)]
     test_main();
 
-    loop {}
+    my_os::hlt_loop();
 }
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     println!("{}", _info);
-    loop {}
+    my_os::hlt_loop();
 }
 
 /* #[cfg(test)]
