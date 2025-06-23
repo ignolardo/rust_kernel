@@ -4,14 +4,24 @@
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+extern crate alloc;
 
 use core::panic::PanicInfo;
+
+#[cfg(test)]
+use bootloader::{entry_point, BootInfo};
+
+
+#[cfg(test)]
+entry_point!(test_kernel_main);
+
 
 pub mod vga_buffers;
 pub mod serial;
 pub mod interrupts;
 pub mod gdt;
-
+pub mod memory;
+pub mod allocator;
 
 
 pub fn init() {
@@ -22,9 +32,6 @@ pub fn init() {
     }
     x86_64::instructions::interrupts::enable();
 }
-
-
-
 
 
 pub trait Testable {
@@ -59,8 +66,7 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
 }
 
 #[cfg(test)]
-#[unsafe(no_mangle)]
-pub extern "C" fn _start() -> ! {
+fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     init();
     test_main();
     hlt_loop();
